@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}BOOK LIST{% endblock %}
+
+<!-- content -->
+{% block content %}
+
+<form action="" method="post" class="flex-container">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn p-3 bg-slate-500 text-yellow-50">Submit</button>
+</form>
+
+{% if object_list %}
+<ul>
+    {% for el in object_list %}
+    <li><a href="{{ el.get_absolute_url }}">{{ el.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock content %}

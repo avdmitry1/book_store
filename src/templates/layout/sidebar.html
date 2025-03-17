@@ -1,0 +1,22 @@
+{% url 'home' as home_url %}
+{% url 'books:main' as books_url %}
+
+<aside
+    class="hidden md:block sticky bg-gradient-to-r from-slate-700 to-slate-500 h-screen text-white w-full pt-14 text-sm">
+    <ul>
+        <li class="mb-5 mx-auto">
+            <a href="{{home_url}}"
+                class="grid h-12 place-items-center cursor-pointer hover:text-slate-300 duration-100 text-gray-100">
+                <i class="fa-solid fa-chart-pie fa-xl"></i>
+                <p>dashboard</p>
+            </a>
+        </li>
+        <li class="mb-5 mx-auto">
+            <a href="{{books_url}}"
+                class="grid h-12 place-items-center cursor-pointer hover:text-slate-300 duration-100 text-gray-100">
+                <i class="fa-solid fa-book fa-xl"></i>
+                <p>books</p>
+            </a>
+        </li>
+    </ul>
+</aside>
