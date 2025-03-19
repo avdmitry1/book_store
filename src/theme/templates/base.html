@@ -1,38 +1,45 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en" class="{% if request.session.is_dark_mode %}dark{% endif %}">
+  <head>
+    <title>
+      Django Tailwind |{% block title %}
+      {% endblock %}
+    </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+  </head>
 
-<head>
-	<title>Django Tailwind | {% block title %}{% endblock title %}</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<!-- font awesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-		integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-		crossorigin="anonymous" referrerpolicy="no-referrer" />
-	{% tailwind_css %}
-</head>
+  <!-- body -->
+  <body class="bg-grey-50 dark:bg-slate-500 text-black dark:text-white">
+    <!-- navbar -->
+    {% include 'layout/navbar.html' %}
+    <div class="grid grid-cols-12">
+      <div class="col-span-1">
+        <!-- sidebar -->
+        {% include 'layout/sidebar.html' %}
+      </div>
+      <div class="col-span-11">
+        <div class="pt-10 px-6">
+          <!-- theme toggle -->
+          <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-300 hover:bg-slate-400 dark:bg-gray-500 dark:hover:bg-gray-400 drop-shadow-lg transition">
+            <i class="fa-solid {% if request.session.is_dark_mode %}
+                fa-sun
+              {% else %}
+                fa-moon
+              {% endif %} fa-lg">
 
-
-<body class="bg-grey-50 dark:bg-slate-500 text-black dark:text-white">
-	{% include 'layout/navbar.html' %}
-	<div class="grid grid-cols-12">
-		<div class="col-span-1">
-			{% include 'layout/sidebar.html' %}
-		</div>
-		<div class="col-span-11">
-			<div class="pt-10 px-6">
-				<a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg
-					bg-slate-300 hover:bg-slate-400 dark:bg-gray-500 dark:hover:bg-gray-400 drop-shadow-lg transition">
-					<i
-						class="fa-solid {% if request.session.is_dark_mode %}fa-sun{% else %}fa-moon{% endif %} fa-lg"></i></a>
-				{% block content %}
-
-				{% endblock content %}
-			</div>
-		</div>
-	</div>
-</body>
-
+            </i>
+          </a>
+          {% block content %}
+            <!-- content -->
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

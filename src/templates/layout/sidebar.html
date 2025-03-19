@@ -1,22 +1,21 @@
-{% url 'home' as home_url %}
-{% url 'books:main' as books_url %}
+{% url 'home' as home_url %} {% url 'books:main' as books_url %}
 
-<aside
-    class="hidden md:block sticky bg-gradient-to-r from-slate-700 to-slate-500 h-screen text-white w-full pt-14 text-sm">
-    <ul>
-        <li class="mb-5 mx-auto">
-            <a href="{{home_url}}"
-                class="grid h-12 place-items-center cursor-pointer hover:text-slate-300 duration-100 text-gray-100">
-                <i class="fa-solid fa-chart-pie fa-xl"></i>
-                <p>dashboard</p>
-            </a>
-        </li>
-        <li class="mb-5 mx-auto">
-            <a href="{{books_url}}"
-                class="grid h-12 place-items-center cursor-pointer hover:text-slate-300 duration-100 text-gray-100">
-                <i class="fa-solid fa-book fa-xl"></i>
-                <p>books</p>
-            </a>
-        </li>
-    </ul>
+<!-- Sidebar -->
+<aside class="hidden md:block bg-gradient-to-b from-slate-800 to-slate-600 h-screen w-full text-white pt-0 text-sm shadow-lg">
+  <ul class="">
+    <!-- dashboard -->
+    <li>
+      <a href="{{ home_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-700 rounded-sm transition duration-300">
+        <i class="fa-solid fa-chart-pie fa-xl text-teal-400"></i>
+        <p class="mt-4 text-wrap">Dashboard</p>
+      </a>
+    </li>
+    <!-- books -->
+    <li>
+      <a href="{{ books_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-700 rounded-sm transition duration-300">
+        <i class="fa-solid fa-book fa-xl text-teal-400"></i>
+        <p class="mt-4 text-wrap">Books</p>
+      </a>
+    </li>
+  </ul>
 </aside>

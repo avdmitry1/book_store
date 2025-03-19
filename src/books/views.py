@@ -1,39 +1,38 @@
 from django.db.models import QuerySet
-from django.http import HttpRequest
-from django.shortcuts import HttpResponse, get_object_or_404, render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import FormView, ListView
 
 from .forms import BookTitleForm
 from .models import BookTitle
+from django.contrib import messages
 
 
 class BookTitleListView(FormView, ListView):
-    """
-    Displays a list of BookTitles and handles form submission to create new ones.
-    """
-
-    queryset = BookTitle.objects.all()
-    template_name = "books/main.html"
-    context_object_name = "object_list"
-    form_class = BookTitleForm
+    queryset: QuerySet[BookTitle] = BookTitle.objects.all()
+    template_name: str = "books/main.html"
+    context_object_name: str = "object_list"
+    form_class: type = BookTitleForm
 
     def get_success_url(self) -> str:
-        """Returns the redirect URL after a successful form submission."""
         return self.request.path
 
     def form_valid(self, form: BookTitleForm) -> HttpResponse:
-        """Saves the form and redirects on success."""
-        form.save()
+        book_title: BookTitle = form.save()
+        messages.add_message(
+            self.request, messages.INFO, f"'{book_title}' created."
+        )
         return super().form_valid(form)
 
+    def form_invalid(self, form: BookTitleForm) -> HttpResponse:
+        self.object_list = self.get_queryset()
+        messages.add_message(self.request, messages.ERROR, form.errors)
+        return super().form_invalid(form)
+
     def get_queryset(self) -> QuerySet[BookTitle]:
-        """Returns books with titles containing 'i'."""
         return BookTitle.objects.filter(title__contains="i")
 
 
 def book_title_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
-    """
-    Displays a single BookTitle object by its primary key (pk).
-    """
-    obj = get_object_or_404(BookTitle, id=pk)
+    obj: BookTitle = get_object_or_404(BookTitle, id=pk)
     return render(request, "books/detail.html", {"obj": obj})

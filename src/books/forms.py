@@ -1,13 +1,27 @@
 from django import forms
 
 from .models import BookTitle
+from django.core.exceptions import ValidationError
 
 
 class BookTitleForm(forms.ModelForm):
     class Meta:
         model = BookTitle
         fields = [
-            "title",
             "publisher",
             "author",
+            "title",
         ]
+
+    def clean(self):
+        title = self.cleaned_data.get("title")
+        if len(title) < 5:
+            msg = "Title must be at least 5 characters long."
+            # self.add_error("title", msg)
+            raise ValidationError(msg)
+
+        book_title_exists = BookTitle.objects.filter(title__iexact=title).exists()
+        if book_title_exists:
+            raise ValidationError("This title already exists. Please enter a new one.")
+
+        return self.cleaned_data

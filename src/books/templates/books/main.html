@@ -1,21 +1,40 @@
-{% extends 'base.html' %}
-{% block title %}BOOK LIST{% endblock %}
+{% extends 'base.html' %} {% load widget_tweaks %} {% block title %}
+  BOOK LIST
+{% endblock %}
 
 <!-- content -->
 {% block content %}
-
-<form action="" method="post" class="flex-container">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn p-3 bg-slate-500 text-yellow-50">Submit</button>
-</form>
-
-{% if object_list %}
-<ul>
-    {% for el in object_list %}
-    <li><a href="{{ el.get_absolute_url }}">{{ el.title }}</a></li>
+  {# Show any messages that are present #}
+  {% if messages %}
+    {% for message in messages %}
+      {% if message %}
+        {% if message.tags == 'info' %}
+          {% include 'components/alert.html' with is_info=True title='Success' body=message %}
+        {% elif message.tags == 'error' %}
+          {% include 'components/alert.html' with is_info=False title='Error' body=message %}
+        {% endif %}
+      {% endif %}
     {% endfor %}
-</ul>
-{% endif %}
+  {% endif %}
 
-{% endblock content %}
+  <form action="" method="post" class="flex-container">
+    {% csrf_token %}
+    <div class="mb-2">
+      <!-- Field for searching for a book title -->
+      <label for="{{ form.title.id_for_label }}" class="block font-semibold">title:</label>
+      {{ form.title|add_class:'bg-slate-100 text-black rounded-sm p-2' }}
+    </div>
+    <div class="mb-2">
+      <!-- Field for searching for the author of a book title -->
+      <label for="{{ form.author.id_for_label }}" class="block font-semibold">author:</label>
+      {{ form.author|add_class:'bg-slate-100 text-black rounded-sm p-2' }}
+    </div>
+    <div class="mb-2">
+      <!-- Field for searching for the publisher of a book title -->
+      <label for="{{ form.publisher.id_for_label }}" class="block font-semibold">publisher:</label>
+      {{ form.publisher|add_class:'bg-slate-100 text-black rounded-sm p-2' }}
+    </div>
+    <!-- Submit button -->
+    <button type="submit" class="btn rounded-sm p-3 bg-slate-500 text-yellow-50 dark:bg-slate-400">Submit</button>
+  </form>
+{% endblock %}

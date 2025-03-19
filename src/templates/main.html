@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+  Home
+{% endblock %}
 
 {% block content %}
-
-
-<ul>
+  <!-- book list -->
+  <ul>
     {% for book in books %}
-    <li>{{ book.title.slug }}</li>
+      <li>{{ book.title.slug }}</li>
     {% empty %}
-    <li>No books found for this title.</li>
+      <li>No books found for this title.</li>
     {% endfor %}
-</ul>
-
+  </ul>
 {% endblock %}
