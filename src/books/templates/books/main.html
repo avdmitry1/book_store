@@ -1,4 +1,13 @@
-{% extends 'base.html' %} {% load widget_tweaks %} {% block title %}
+{% extends 'base.html' %} {% load widget_tweaks %} {% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'books/main.css' %}" />
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'books/main.js' %}" defer></script>
+{% endblock %}
+
+{% block title %}
   BOOK LIST
 {% endblock %}
 
@@ -17,6 +26,17 @@
     {% endfor %}
   {% endif %}
 
+  <!-- header -->
+  {% include 'components/header.html' with title='Book Titles' description='List of all book titles' %}
+
+  <!-- Letters -->
+  <div class="flex flex-wrap justify-center gap-2 my-4">
+    {% for letter in letters %}
+      <a href="{% url 'books:main' letter=letter %}" class="{% if letter == selected_letter %} font-semibold underline text-2xl {% endif %} p-1">{{ letter }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- Search form -->
   <form action="" method="post" class="flex-container">
     {% csrf_token %}
     <div class="mb-2">
@@ -35,6 +55,19 @@
       {{ form.publisher|add_class:'bg-slate-100 text-black rounded-sm p-2' }}
     </div>
     <!-- Submit button -->
-    <button type="submit" class="btn rounded-sm p-3 bg-slate-500 text-yellow-50 dark:bg-slate-400">Submit</button>
+    <button type="submit" class="btn rounded-sm p-3 bg-slate-500 text-yellow-50 dark:bg-slate-400" aria-label="Submit search">>Submit</button>
   </form>
+
+  <!-- List of book titles startswith the selected letter -->
+  {% if object_list %}
+    <ul class="flex flex-col gap-4">
+      {% for book_title in object_list %}
+        <li>
+          <a href="{{ book_title.get_absolute_url }}" class="flex flex-col items-center text-lg border py-4 hover:bg-slate-700 hover:text-white transition duration-300 shadow-lg rounded-lg"><p class="text-wrap">{{ book_title.title }}</p></a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-center text-lg">No book titles found.</p>
+  {% endif %}
 {% endblock %}

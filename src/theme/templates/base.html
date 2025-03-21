@@ -4,6 +4,7 @@
   <head>
     <title>
       Django Tailwind |{% block title %}
+
       {% endblock %}
     </title>
     <meta charset="UTF-8" />
@@ -11,6 +12,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="{% static 'main.js' %}" defer></script>
+    <!-- js -->
+    {% block scripts %}
+
+    {% endblock %}
+
     {% tailwind_css %}
   </head>
 
@@ -28,9 +36,25 @@
           <!-- theme toggle -->
           <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-300 hover:bg-slate-400 dark:bg-gray-500 dark:hover:bg-gray-400 drop-shadow-lg transition">
             <i class="fa-solid {% if request.session.is_dark_mode %}
+                
+                
+                
+                
                 fa-sun
+
+
+
+
               {% else %}
+                
+                
+                
+                
                 fa-moon
+
+
+
+
               {% endif %} fa-lg">
 
             </i>
