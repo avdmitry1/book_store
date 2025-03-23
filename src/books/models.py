@@ -28,8 +28,8 @@ class BookTitle(models.Model):
         return self.book_set.all()
 
     def get_absolute_url(self):
-        """Returns the absolute URL for the book title's detail page."""
-        return reverse("books:detail", kwargs={"pk": self.pk})
+        letter = self.title[0].lower()
+        return reverse("books:detail", kwargs={"letter": letter, "slug": self.slug})
 
     def __str__(self):
         return f"Book: {self.title}"

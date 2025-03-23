@@ -4,7 +4,6 @@
   <head>
     <title>
       Django Tailwind |{% block title %}
-
       {% endblock %}
     </title>
     <meta charset="UTF-8" />
@@ -35,28 +34,12 @@
         <div class="pt-10 px-6">
           <!-- theme toggle -->
           <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-300 hover:bg-slate-400 dark:bg-gray-500 dark:hover:bg-gray-400 drop-shadow-lg transition">
-            <i class="fa-solid {% if request.session.is_dark_mode %}
-                
-                
-                
-                
+            <i class="fa-solid 
+            {% if request.session.is_dark_mode %}
                 fa-sun
-
-
-
-
-              {% else %}
-                
-                
-                
-                
+            {% else %}               
                 fa-moon
-
-
-
-
-              {% endif %} fa-lg">
-
+            {% endif %} fa-lg">
             </i>
           </a>
           {% block content %}

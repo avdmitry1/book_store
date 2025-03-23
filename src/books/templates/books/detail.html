@@ -4,5 +4,12 @@
 {% endblock %}
 
 {% block content %}
-  <h1>{{ obj.title }} {{ obj.id }}</h1>
+  <p>Count: {{ object_list|length }}</p>
+
+  {% for book in object_list %}
+    <h1>{{ book.title }}</h1>
+    <p>{{ book.isbn }}</p>       
+  {% empty %}
+    <p>No books found.</p>
+  {% endfor %}
 {% endblock %}

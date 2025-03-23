@@ -1,12 +1,13 @@
+import string
+
+from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import FormView, ListView
 
 from .forms import BookTitleForm
-from .models import BookTitle
-from django.contrib import messages
-import string
+from .models import Book, BookTitle
 
 
 class BookTitleListView(FormView, ListView):
@@ -25,7 +26,17 @@ class BookTitleListView(FormView, ListView):
 
     def form_invalid(self, form: BookTitleForm) -> HttpResponse:
         self.object_list = self.get_queryset()
-        messages.add_message(self.request, messages.ERROR, form.errors)
+
+        for field, errors in form.errors.items():
+            if field == "__all__":
+                for error in errors:
+                    messages.add_message(self.request, messages.ERROR, error)
+            else:
+                for error in errors:
+                    messages.add_message(
+                        self.request, messages.ERROR, f"{field}: {error}"
+                    )
+
         return super().form_invalid(form)
 
     def get_queryset(self) -> QuerySet[BookTitle]:
@@ -39,7 +50,17 @@ class BookTitleListView(FormView, ListView):
         context["selected_letter"] = self.kwargs.get("letter", "a")
         return context
 
-
-def book_title_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
-    obj: BookTitle = get_object_or_404(BookTitle, id=pk)
-    return render(request, "books/detail.html", {"obj": obj})
+class BookListView(ListView):
+    template_name = "books/detail.html"
+    context_object_name = "object_list"
+    
+    def get_queryset(self):
+        title_slug = self.kwargs.get("slug")
+        book_title = get_object_or_404(BookTitle, slug=title_slug)
+        return Book.objects.filter(title=book_title)
+    
+    
+    
+# def book_title_detail_view(request: HttpRequest, slug: str, letter: str) -> HttpResponse:
+#     obj: BookTitle = get_object_or_404(BookTitle, slug=slug)
+#     return render(request, "books/detail.html", {"obj": obj})
