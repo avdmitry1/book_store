@@ -2,8 +2,8 @@ import string
 
 from django.contrib import messages
 from django.db.models import QuerySet
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic import FormView, ListView
 
 from .forms import BookTitleForm
