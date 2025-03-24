@@ -4,12 +4,93 @@
 {% endblock %}
 
 {% block content %}
-  <p>Count: {{ object_list|length }}</p>
+  {% include 'components/header.html' with title=object.title description="Book title details" is_go_back=True %}
 
-  {% for book in object_list %}
-    <h1>{{ book.title }}</h1>
-    <p>{{ book.isbn }}</p>       
+  {% for book in object.books %}
+    <h1>{{ book.title.title }}</h1>
+    <p>ISBN - {{ book.isbn }}</p>       
   {% empty %}
     <p>No books found.</p>
   {% endfor %}
+
+
+
+<!-- Pagination -->
+{% if is_paginated %}
+    {# This will only be rendered if the page object has enough items to paginate. #}
+    <div class="mt-3">
+        {# An unordered list for the pagination links. #}
+        <ul class="inline-flex items-center -space-x-px">
+            {# If there is a previous page, show the left arrow. #}
+            {% if page_obj.has_previous %}
+                <li>
+                    {# If there is a previous page, link to the previous page. #}
+                    <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"
+                        {% else %} href="" 
+                        {% endif %} class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg 
+                        hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 
+                        dark:hover:bg-gray-700 dark:hover:text-white">                    
+                        {# A left arrow icon. #}
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" 
+                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" 
+                          clip-rule="evenodd">
+                          </path>
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Loop over all the page numbers. #}
+            {% for i in page_obj.paginator.page_range %}
+                {# If the current page number is the same as the loop index, show a bold link. #}
+                {% if page_obj.number == i %}
+                    <li>
+                      <a class="px-3 py-2 leading-tight text-gray-600 dark:text-gray-100 bg-gray-200 
+                        dark:bg-gray-700 border border-gray-300 hover:bg-white hover:text-gray-700  
+                        dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white" 
+                      href="?page={{ i }}">{{ i }}
+                      </a>
+                    </li>
+                {# If the current page number is not the same as the loop index, show a regular link. #}
+                {% else %}
+                    <li>
+                      <a class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 
+                        hover:bg-gray-100 hover:text-gray-700 
+                        dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 
+                        dark:hover:bg-gray-700 dark:hover:text-white" 
+                      href="?page={{ i }}">{{ i }}
+                      </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+ 
+            {# If there is a next page, show the right arrow. #}
+            {% if page_obj.has_next %}
+                <li>
+                  {# If there is a next page, link to the next page. #}
+                  <a {% if page_obj.has_next %}
+                      href="?page={{ page_obj.next_page_number }}"
+                    {% else %} 
+                      href="" 
+                    {% endif %} 
+                      class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg 
+                      hover:bg-gray-200 hover:text-gray-700 
+                      dark:bg-gray-700 dark:border-gray-100 dark:text-gray-400 
+                      dark:hover:bg-gray-600 dark:hover:text-white">                    
+                      {# A right arrow icon. #}
+                      <svg aria-hidden="true" 
+                        class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" 
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" 
+                        clip-rule="evenodd">
+                        </path>
+                      </svg>
+                    </a>
+                  </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %} 
+
 {% endblock %}

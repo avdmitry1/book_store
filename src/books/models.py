@@ -28,16 +28,24 @@ class BookTitle(models.Model):
         return self.book_set.all()
 
     def get_absolute_url(self):
+        # Extract the first letter of the title and convert it to lowercase.
         letter = self.title[0].lower()
-        return reverse("books:detail", kwargs={"letter": letter, "slug": self.slug})
+
+        # Create a context dictionary with the letter and slug.
+        context = {"letter": letter, "slug": self.slug}
+
+        # Use the reverse function to generate a URL for the 'books:detail' route.
+        return reverse("books:detail", kwargs=context)
 
     def __str__(self):
         return f"Book: {self.title}"
 
     def save(self, *args, **kwargs):
-        """Sets the slug before saving."""
         if not self.slug:
             self.slug = slugify(self.title)
+            # The slugify function takes a string and returns a URL-safe
+            # version of it. It replaces spaces with hyphens, removes any
+            # non-alphanumeric characters, and lowercases the string.
         super().save(*args, **kwargs)
 
 
@@ -53,10 +61,15 @@ class Book(models.Model):
 
     @property
     def status(self):
-        """Returns the rental status of the book."""
+        # Check if there are any Rental objects associated with this book
         if len(self.rental_set.all()) > 0:
+            # Convert STATUS_CHOICES tuple into a dictionary for easy lookup
             statuses = dict(STATUS_CHOICES)
+            # Retrieve the status of the first Rental object and return its
+            # human-readable representation from the statuses dictionary
             return statuses[self.rental_set.first().status]
+        # If no Rental objects are associated, return False indicating
+        # that the book has not been rented
         return False
 
     def save(self, *args, **kwargs):

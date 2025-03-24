@@ -1,4 +1,4 @@
-<div class="bg-slate-700 text-white mb-5 h-16 flex justify-between items-center px-6 shadow-xl rounded-lg">
+<div class="bg-slate-700 text-white mb-5 h-16 flex justify-between items-center px-6 shadow-xl rounded-lg" id="head">
   <div class="flex-col inline-flex">
     <div class="text-2xl">{{ title }}</div>
     <div class="text-md">{{ description }}</div>
@@ -6,9 +6,21 @@
   <div>
     <!-- buttons here -->
     {% if is_form_available %}
-      <div>
-        <button class="bg-transparent border-2 border-t-white text-white hover:bg-slate-300 hover:text-slate-900 p-2 inline-flex rounded-lg text-xl" id="open-modal-btn">{{ icon }}</button>
-      </div>
+        <div>
+          <button class="bg-transparent border-2 border-t-white text-white 
+          hover:bg-slate-300 hover:text-slate-900 p-2 inline-flex rounded-lg text-xl" 
+            id="open-modal-btn">{{ icon }}
+          </button>
+        </div>
+    {% endif %}
+    {% if is_go_back %}
+        <div class="{% if is_form_available %} ml-3 {% endif %}" >
+          <button class="bg-transparent border-2 border-t-white text-white 
+            hover:bg-slate-200 hover:text-slate-900 p-2 inline-flex rounded-lg text-base" 
+              id="go-back-btn">
+            <i class="fa-solid fa-long-arrow-left"></i>
+          </button>
+        </div>
     {% endif %}
   </div>
 </div>
