@@ -3,11 +3,10 @@ import string
 from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from django.views.generic import FormView, ListView, DetailView
+from django.views.generic import DetailView, FormView, ListView
 
 from .forms import BookTitleForm
-from .models import Book, BookTitle
+from .models import BookTitle
 
 
 class BookTitleListView(FormView, ListView):

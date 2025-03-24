@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import BookTitleListView, BookTitleDetailView
+from .views import BookTitleDetailView, BookTitleListView
 
 app_name = "books"
 
