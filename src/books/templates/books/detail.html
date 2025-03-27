@@ -4,14 +4,86 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'components/header.html' with title=object.title description="Book title details" is_go_back=True %}
 
-  {% for book in object.books %}
+{% if messages %}
+	{% for message in messages %}
+		{% if message.level_tag == 'info' %}
+			{% include 'components/alert.html' with is_info=True title='Success' body=message %}
+		{% endif %}
+	{% endfor %}
+{% endif %}
+
+{% include 'components/header.html' with title=object.title description="Book title details" is_go_back=True %}
+
+    <!-- Table -->
+    <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
+        <thead class=" text-sm text-gray-700 uppercase dark:bg-slate-700 dark:text-gray-200 hover:bg-gray-100 hover:dark:bg-slate-600">
+            <tr class="border border-gray-800">
+                <th scope="col" class="py-3 px-6">
+                    #
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    title
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    book id
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    qr code
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    status
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    available
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    select
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object.books %}
+            <tr class="border-b hover:bg-gray-100 hover:dark:bg-slate-600 dark:bg-slate-700 dark:border-gray-800 {% if not obj.is_read  %}font-bold{% endif %}">
+                <td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ forloop.counter }}
+                </td>
+                <td class="py-4 px-6">
+                    {{ obj.title.title }}
+                </td>
+                <td class="py-4 px-6">
+                    {{ obj.isbn }}
+                </td>
+                <td class="py-4 px-6">
+                    <img src="{{ obj.qr_code.url }}" alt="{{ obj.isbn }}" class="w-10 h-10 rounded-lg">
+                </td>
+                <td class="py-4 px-6">
+                    {{ obj.status }}
+                </td>
+                <td class="py-4 px-6">
+                </td>
+                <td class="py-4 px-6 hover:text-violet-600 dark:hover:text-violet-400">
+                  <a href="{{ obj.get_absolute_url }}">Click Here</a>
+                </td>
+                <td class="py-4 px-6 hover:text-violet-600 dark:hover:text-violet-400">
+                  <a href="{{ obj.delete_object }}">delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+  {% comment %} {% for book in object.books %}
     <h1>{{ book.title.title }}</h1>
     <p>ISBN - {{ book.isbn }}</p>       
   {% empty %}
     <p>No books found.</p>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
 
 
 

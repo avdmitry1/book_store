@@ -3,10 +3,12 @@ import string
 from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpResponse
-from django.views.generic import DetailView, FormView, ListView
+from django.shortcuts import get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, FormView, ListView, DeleteView
 
 from .forms import BookTitleForm
-from .models import BookTitle
+from .models import Book, BookTitle
 
 
 class BookTitleListView(FormView, ListView):
@@ -118,3 +120,34 @@ class BookTitleDetailView(DetailView):
 # def book_title_detail_view(request: HttpRequest, slug: str, letter: str) -> HttpResponse:
 #     obj: BookTitle = get_object_or_404(BookTitle, slug=slug)
 #     return render(request, "books/detail.html", {"obj": obj})
+
+
+class BookDetailView(DetailView):
+    model = Book
+    template_name = "books/detail_book.html"
+
+    def get_object(self):
+        id = self.kwargs.get("book_id")
+        obj = get_object_or_404(Book, isbn=id)
+        return obj
+
+
+class BookDeleteView(DeleteView):
+    model = Book
+    template_name = "books/confirm_delete.html"
+    success_url = reverse_lazy("book_list")
+
+    def get_object(self):
+        id = self.kwargs.get("book_id")
+        obj = get_object_or_404(Book, isbn=id)
+        return obj
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request,
+            messages.INFO,
+            f"Book {self.get_object().isbn} deleted.",
+        )
+        letter = self.kwargs.get("letter")
+        slug = self.kwargs.get("slug")
+        return reverse("books:detail", kwargs={"letter": letter, "slug": slug})

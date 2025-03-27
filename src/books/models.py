@@ -30,11 +30,7 @@ class BookTitle(models.Model):
     def get_absolute_url(self):
         # Extract the first letter of the title and convert it to lowercase.
         letter = self.title[0].lower()
-
-        # Create a context dictionary with the letter and slug.
         context = {"letter": letter, "slug": self.slug}
-
-        # Use the reverse function to generate a URL for the 'books:detail' route.
         return reverse("books:detail", kwargs=context)
 
     def __str__(self):
@@ -55,6 +51,25 @@ class Book(models.Model):
     qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        # Extract the first letter of the title and convert it to lowercase.
+        letter = self.title.title[0].lower()
+        context = {
+            "letter": letter,
+            "slug": self.title.slug,
+            "book_id": self.isbn,
+        }
+        return reverse("books:detail_book", kwargs=context)
+
+    def delete_object(self):
+        letter = self.title.title[0].lower()
+        context = {
+            "letter": letter,
+            "slug": self.title.slug,
+            "book_id": self.isbn,
+        }
+        return reverse("books:delete_book", kwargs=context)
 
     def __str__(self):
         return str(self.title)

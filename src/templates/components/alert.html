@@ -1,10 +1,10 @@
 <!-- alert -->
 <div class="px-4 py-2 rounded-lg relative flex flex-col mb-3 max-w-md
- {% if is_info %}
+   {% if is_info %}
      bg-sky-100 border border-sky-700 text-sky-800
-  {% else %}
+   {% else %}
      bg-red-100 border border-red-700 text-red-500
-  {% endif %}"
+   {% endif %}"
   role="alert">
   <div class="text-2xl font-bold">{{ title }}</div>
   <div class="text-md">{{ body }}</div>
