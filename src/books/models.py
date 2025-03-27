@@ -87,6 +87,13 @@ class Book(models.Model):
         # that the book has not been rented
         return False
 
+    @property
+    def is_available(self):
+        rentals = self.rental_set.all()
+        if rentals:
+            return rentals.first().status == "1"
+        return True
+
     def save(self, *args, **kwargs):
         """Generates ISBN and QR code before saving the book."""
         if not self.isbn:

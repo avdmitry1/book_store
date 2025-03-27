@@ -116,6 +116,11 @@ class BookTitleDetailView(DetailView):
     model = BookTitle
     template_name = "books/detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previus_page"] = reverse("books:main")
+        return context
+
 
 # def book_title_detail_view(request: HttpRequest, slug: str, letter: str) -> HttpResponse:
 #     obj: BookTitle = get_object_or_404(BookTitle, slug=slug)
