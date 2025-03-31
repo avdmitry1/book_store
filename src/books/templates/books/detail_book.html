@@ -1,5 +1,58 @@
 {% extends 'base.html' %}
-
+{% load static %}
+ 
+{% block scripts %}
+    <script src="{% static 'books/detail_book.js' %}" defer></script>
+{% endblock scripts %}
+ 
+ 
 {% block content %}
-    <div>PISUN</div>
+<!-- header -->
+{% include "components/header.html" with title=object.title.title description=object.title.publisher.name is_go_back=True %}
+ 
+<div class="flex justify-center p-2">
+    <div class="flex flex-col items-center ">
+        <div class="text-center mb-5 text-lg font-semibold">
+            <!-- display status -->
+            {% if object.is_available %}
+            Available: 
+                {% if object.status %}
+                    {{ object.status }}
+                {% else %}
+                    Not rented
+                {% endif %}
+            {% else %}
+                Not available
+            {% endif %}
+                
+        </div>
+        <!-- add qr code -->
+        <img src="{{ object.qr_code.url }}" alt="{{ object.isbn }} QR code" class="w-40 h-40 rounded-lg">
+        <div class="mt-5 text-center">
+            <!-- rent or change status buttons -->
+            {% if not object.is_available %}
+                <a href="" class="bg-sky-600/70 hover:bg-sky-500/70 dark:hover:bg-sky-700/70 
+                inline-flex items-center rounded-lg p-3 duration-200 text-white">Change status</a>
+                <a href="" class="bg-rose-600/70 hover:bg-rose-500/70 dark:hover:bg-rose-700/70 
+                inline-flex items-center rounded-lg p-3 duration-200 text-white ">History</a>
+                
+            {% endif %}
+                
+        </div>
+    </div>  
+</div>
+ 
+<div class="flex justify-center">
+    <div class="mt-6 p-1 rounded-lg relative bg-slate-300 dark:bg-slate-600 border 
+        border-slate-500 dark:border-slate-900 text-slate-700 
+        dark:text-slate-200 drop-shadow-md w-1/2">
+        <!--code for copying to clipboard-->
+        <div id="book-id-box" class="text-center">{{ object.isbn }}</div>
+        <div class="absolute top-1 right-2 cursor-pointer dark:text-white" id="copy-btn-box">
+            <i class="fa-solid fa-copy"></i>
+        </div>
+    </div>
+</div>
+ 
+ 
 {% endblock %}
