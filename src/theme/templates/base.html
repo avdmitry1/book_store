@@ -22,19 +22,19 @@
   </head>
 
   <!-- body -->
-  <body class="bg-grey-50 dark:bg-slate-500 text-black dark:text-white">
+  <body class="bg-neutral-100 dark:bg-slate-700 text-black dark:text-white">
     <!-- navbar -->
     {% include 'layout/navbar.html' %}
     <div class="grid grid-cols-12">
-      <div class="col-span-1">
+      <div class="col-span-1 py-4">
         <!-- sidebar -->
         {% include 'layout/sidebar.html' %}
       </div>
       <div class="col-span-11">
         <div class="pt-10 px-6">
           <!-- theme toggle -->
-          <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-300 
-            hover:bg-slate-400 dark:bg-gray-500 dark:hover:bg-gray-400 drop-shadow-lg transition">
+          <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-400 
+            hover:bg-slate-500 dark:bg-slate-500 dark:hover:bg-slate-600 drop-shadow-lg transition">
             <i class="fa-solid 
             {% if request.session.is_dark_mode %}
                 fa-sun

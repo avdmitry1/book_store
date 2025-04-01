@@ -1,14 +1,16 @@
-<div class="bg-slate-700 text-white mb-5 h-16 flex justify-between items-center px-6 shadow-xl rounded-lg" id="head">
-    <div class="flex-col inline-flex">
+<div class="bg-slate-200 dark:bg-slate-600 text-black dark:text-white mb-5 h-24 -mt-6
+    flex justify-between items-center px-6 shadow-xl rounded-lg border border-slate-400" id="head">
+    <div class="flex-col inline-flex font-serif font-medium">
         <div class="text-2xl">{{ title|default_if_none:"" }}</div>
-        <div class="text-md">{{ description|default_if_none:"" }}</div>
+        <div class="text-lg">{{ description|default_if_none:"" }}</div>
     </div>
     <div>
         <!-- buttons here -->
         {% if is_form_available %}
             <div>
-            <button class="bg-transparent border-2 border-t-white text-white 
-            hover:bg-slate-300 hover:text-slate-900 p-2 inline-flex rounded-lg text-xl" 
+            <button class="border border-slate-600 text-white bg-slate-400 
+            dark:bg-slate-600 dark:hover:bg-slate-500 dark:text-slate-200 dark:border-slate-400
+            hover:bg-slate-500 hover:text-slate-200 p-2 inline-flex rounded-lg text-xl" 
                 id="open-modal-btn">{{ icon|default_if_none:"" }}
             </button>
             </div>
@@ -16,13 +18,13 @@
         {% if is_go_back %}
             <div class="{% if is_form_available %} ml-3 {% endif %}" >
                 {% if previus_page %}
-                    <a href="{{ previus_page }}" class="bg-transparent border-2 border-t-white text-white 
-                    hover:bg-slate-200 hover:text-slate-900 p-2 inline-flex rounded-lg text-xl" >
+                    <a href="{{ previus_page }}" class="bg-slate-400 border border-slate-600 text-white 
+                    hover:bg-slate-500 p-2 inline-flex rounded-lg text-xl" >
                         <i class="fa-solid fa-arrow-left"></i>
                     </a>
                 {% else %}
-                    <button class="bg-transparent border-2 border-t-white text-white 
-                    hover:bg-slate-200 hover:text-slate-900 p-2 inline-flex rounded-lg text-xl" 
+                    <button class="border border-slate-600 bg-slate-400 text-white 
+                    hover:bg-slate-500 p-2 inline-flex rounded-lg text-xl" 
                     id="go-back-btn">
                         <i class="fa-solid fa-arrow-left"></i>
                     </button>

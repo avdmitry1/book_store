@@ -23,3 +23,16 @@ def search_book_view(request):
 class BookRentalHistoryView(ListView):
     model = Rental
     template_name = "rentals/detail.html"
+
+    def get_queryset(self):
+        book_id = self.kwargs.get("book_id")
+        return Rental.objects.filter(book__isbn=book_id)
+
+    def get_context_data(self, **kwargs):
+        contex = super().get_context_data(**kwargs)
+        qs = self.get_queryset()
+        obj = None
+        if qs.exists():
+            obj = qs.first()
+        contex["object"] = obj
+        return contex

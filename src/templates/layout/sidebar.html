@@ -3,32 +3,29 @@
 {% url 'rentals:main' as rentals_url %}
 
 <!-- Sidebar -->
-<aside class="hidden md:block bg-slate-700 h-screen w-full text-white pt-0 text-sm 
-    border-r border-slate-300/30">
+<aside class="hidden md:block dark:bg-slate-600 bg-slate-200 h-screen w-full 
+    dark:text-white pt-0 text-base text-black shadow-xl rounded-lg border border-slate-400" >
     <ul class="">
         <!-- dashboard -->
         <li>
-            <a href="{{ home_url }}" class="flex flex-col place-items-center py-10
-            border border-slate-500
-            hover:bg-slate-600 rounded-sm transition duration-300" id="home-link">
+            <a href="{{ home_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-300 
+                dark:hover:bg-slate-500 rounded-sm transition duration-300" id="home-link">
                 <i class="fa-solid fa-chart-pie fa-xl"></i>
                 <p class="mt-4 text-wrap">Dashboard</p>
             </a>
         </li>
         <!-- books -->
         <li>
-            <a href="{{ books_url }}" class="flex flex-col place-items-center py-10
-            border border-slate-500
-            hover:bg-slate-600 rounded-sm transition duration-300" id="books-link">
+            <a href="{{ books_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-300 
+                dark:hover:bg-slate-500 rounded-sm transition duration-300" id="books-link">
                 <i class="fa-solid fa-book fa-xl"></i>
                 <p class="mt-4 text-wrap">Books</p>
             </a>
         </li>
         <!-- rentals -->
          <li>
-            <a href="{{ rentals_url }}" class="flex flex-col place-items-center py-10
-            border border-slate-500
-            hover:bg-slate-600 rounded-sm transition duration-300" id="rentals-link">
+            <a href="{{ rentals_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-300 
+                dark:hover:bg-slate-500 rounded-sm transition duration-300" id="rentals-link">
                 <i class="fa-solid fa-bookmark fa-xl"></i>
                 <p class="mt-4 text-wrap">Rentals</p>
             </a>
