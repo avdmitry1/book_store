@@ -16,9 +16,10 @@
 {% include 'components/header.html' with title=object.title description="Book title details" is_go_back=True previous_page=previus_page %}
 
     <!-- Table -->
-    <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400 bg-gray-200">
         <thead class=" text-sm text-gray-700 uppercase dark:bg-slate-700 dark:text-gray-200 
-          hover:bg-gray-200 hover:dark:bg-slate-600">
+           hover:dark:bg-slate-600">
             <tr class="border border-gray-800">
                 <th scope="col" class="py-3 px-6">
                     #
@@ -28,6 +29,9 @@
                 </th>
                 <th scope="col" class="py-3 px-6">
                     book id
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    isbn
                 </th>
                 <th scope="col" class="py-3 px-6">
                     qr code
@@ -48,13 +52,16 @@
         </thead>
         <tbody>
             {% for obj in object.books %}
-            <tr class="border-b hover:bg-gray-200 hover:dark:bg-slate-600 dark:bg-slate-700 
+            <tr class="border-b hover:dark:bg-slate-600 dark:bg-slate-700 
               dark:border-gray-800 {% if not obj.is_read  %}font-bold{% endif %}">
                 <td scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ forloop.counter }}
                 </td>
                 <td class="py-4 px-6">
                     {{ obj.title.title }}
+                </td>
+                <td class="py-4 px-6">
+                    {{ obj.id }}
                 </td>
                 <td class="py-4 px-6">
                     {{ obj.isbn }}
@@ -84,6 +91,7 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
 
 
 

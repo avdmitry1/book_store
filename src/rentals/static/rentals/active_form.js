@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.focus();
 
         input.addEventListener("keyup", () => {
-            if (input.value.length === 24) {
+            if (input.value.length === 36) {
                 form.submit();
             }
         });

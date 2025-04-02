@@ -8,8 +8,8 @@
 
 
 {% block content %}
-    {% if object.book.title %}
-        {% include 'components/header.html' with title=object.book.title.title description=object.book.title.publisher.name %}
+    {% if object.title.title %}
+        {% include 'components/header.html' with title=object.title.title description=object.title.publisher.name %}
     {% else %}
         <p class="text-center text-2xl font-semibold py-10">No book title found.</p>
     {% endif %}
@@ -22,30 +22,15 @@
             <thead class="text-xs text-slate-700 uppercase 
                 dark:bg-slate-700 dark:text-slate-200">
                 <tr class="border border-slate-500 rounded-lg">
-                    <th scope="col" class="py-3 px-6">
-                        #
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        customer
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        isbn
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        status
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        start
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        end
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        return
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        is closed
-                    </th>
+                    <th scope="col" class="py-3 px-6">#</th>
+                    <th scope="col" class="py-3 px-6">customer</th>
+                    <th scope="col" class="py-3 px-6">id</th>
+                    <th scope="col" class="py-3 px-6">isbn</th>
+                    <th scope="col" class="py-3 px-6">status</th>
+                    <th scope="col" class="py-3 px-6">start</th>
+                    <th scope="col" class="py-3 px-6">end</th>
+                    <th scope="col" class="py-3 px-6">return</th>
+                    <th scope="col" class="py-3 px-6">is closed</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +41,9 @@
                     </td>
                     <td class="py-4 px-6">
                         {{ obj.customer.user_name }}
+                    </td>
+                    <td class="py-4 px-6">
+                        {{ obj.book.id }}
                     </td>
                     <td class="py-4 px-6">
                         {{ obj.book.isbn }}

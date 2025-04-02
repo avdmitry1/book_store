@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 
 from books.models import Book
@@ -12,9 +12,9 @@ def search_book_view(request):
 
     if form.is_valid():
         search_query = form.cleaned_data["search"]
-        book = Book.objects.filter(isbn=search_query).first()
+        book = Book.objects.filter(id=search_query).exists()
         if book:
-            return redirect("rentals:detail", book_id=book.isbn)
+            return redirect("rentals:detail", search_query)
 
     context = {"form": form}
     return render(request, "rentals/main.html", context)
@@ -26,13 +26,12 @@ class BookRentalHistoryView(ListView):
 
     def get_queryset(self):
         book_id = self.kwargs.get("book_id")
-        return Rental.objects.filter(book__isbn=book_id)
+        return Rental.objects.filter(book__id=book_id)
 
     def get_context_data(self, **kwargs):
-        contex = super().get_context_data(**kwargs)
-        qs = self.get_queryset()
-        obj = None
-        if qs.exists():
-            obj = qs.first()
-        contex["object"] = obj
-        return contex
+        context = super().get_context_data(**kwargs)
+        book_id = self.kwargs.get("book_id")
+        # obj = Book.objects.filter(id=book_id).first()
+        obj = get_object_or_404(Book, id=book_id)
+        context["object"] = obj
+        return context
