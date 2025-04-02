@@ -11,6 +11,7 @@ from publishers.models import Publisher
 
 class Command(BaseCommand):
     """Generate dummy data for the books app"""
+
     help = __doc__
 
     def handle(self, *args: Any, **kwargs: Any) -> None:
@@ -21,7 +22,15 @@ class Command(BaseCommand):
         self.generate_customers()
 
     def generate_authors(self) -> None:
-        author_names = ["John Smith", "Jane Doe", "Bob Johnson", "Alice Clark"]
+        author_names = [
+            "John Smith",
+            "Jane Doe",
+            "Bob Johnson",
+            "Alice Clark",
+            "Charlie Brown",
+            "Eve Green",
+            "Frank White",
+        ]
         for name in author_names:
             Author.objects.get_or_create(name=name)
 
@@ -31,6 +40,9 @@ class Command(BaseCommand):
             {"name": "Books", "country": "DE"},
             {"name": "Edu Mind", "country": "GB"},
             {"name": "Next", "country": "PL"},
+            {"name": "Books-store", "country": "FR"},
+            {"name": "Web", "country": "IT"},
+            {"name": "Verse books", "country": "ES"},
         ]
         for publisher in publishers:
             Publisher.objects.get_or_create(**publisher)
@@ -41,6 +53,10 @@ class Command(BaseCommand):
             "Lord of the Rings",
             "Django Made Easy",
             "Web Development",
+            "Python Crash Course",
+            "The Alchemist",
+            "The Secret",
+            "The 7 Habits of Highly Effective People",
         ]
         authors: List[Author] = list(Author.objects.all())
         publishers: List[Publisher] = list(Publisher.objects.all())
@@ -66,7 +82,9 @@ class Command(BaseCommand):
             {"first_name": "John", "last_name": "Doe"},
             {"first_name": "Adam", "last_name": "Harris"},
             {"first_name": "Lisa", "last_name": "Martinez"},
+            {"first_name": "Jane", "last_name": "Miller"},
+            {"first_name": "Bob", "last_name": "Smith"},
+            {"first_name": "Alice", "last_name": "Jones"},
         ]
         for customer in customers:
             Customer.objects.get_or_create(**customer)
-

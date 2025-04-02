@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load get_status_text %}
 
 {% block title %}
     History
@@ -18,8 +18,9 @@
     {% if object %}
         {% if object_list %}
         <div class="overflow-x-auto"> 
-        <table class="w-full text-sm text-left text-gray-700">
-            <thead class="text-xs text-slate-700 uppercase dark:bg-slate-700 dark:text-slate-200">
+        <table class="w-full text-sm text-left text-gray-700 bg-gray-200">
+            <thead class="text-xs text-slate-700 uppercase 
+                dark:bg-slate-700 dark:text-slate-200">
                 <tr class="border border-slate-500 rounded-lg">
                     <th scope="col" class="py-3 px-6">
                         #
@@ -60,7 +61,7 @@
                         {{ obj.book.isbn }}
                     </td>
                     <td class="py-4 px-6">
-                        {{ obj.status }}
+                        {{ obj.status|get_status_text }}
                     </td>
                     <td class="py-4 px-6">
                         {{ obj.rent_start_date }}

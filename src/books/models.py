@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from authors.models import Author
 from publishers.models import Publisher
 from rentals.choices import STATUS_CHOICES
+from .utils import hash_book_info
 
 
 class BookTitle(models.Model):
@@ -46,6 +47,13 @@ class BookTitle(models.Model):
 
 
 class Book(models.Model):
+    id = models.CharField(
+        primary_key=True,
+        unique=True,
+        max_length=36,
+        default=uuid.uuid4,
+        editable=False,
+    )
     title = models.ForeignKey(BookTitle, on_delete=models.CASCADE)
     isbn = models.CharField(max_length=255, blank=True)
     qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
@@ -97,7 +105,8 @@ class Book(models.Model):
     def save(self, *args, **kwargs):
         """Generates ISBN and QR code before saving the book."""
         if not self.isbn:
-            self.isbn = str(uuid.uuid4()).replace("-", "")[:24].lower()
+            # self.isbn = str(uuid.uuid4()).replace("-", "")[:24].lower()
+            self.isbn = hash_book_info(self.title.title, self.title.publisher.name)
 
             # Generate QR code
             qr = qrcode.QRCode(

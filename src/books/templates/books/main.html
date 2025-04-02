@@ -84,8 +84,8 @@
         {% for book_title in object_list %}
             <li>
                 <a href="{{ book_title.get_absolute_url }}" class="flex flex-col items-center text-lg 
-                border py-5 text-black bg-slate-200 hover:bg-slate-300 transition duration-300 shadow-lg 
-                rounded-lg dark:bg-slate-600 dark:hover:bg-slate-500 dark:border border-slate-400 
+                border py-5 text-black bg-slate-200 hover:bg-slate-300 transition duration-300 shadow-md
+                shadow-slate-500 rounded-lg dark:bg-slate-600 dark:hover:bg-slate-500 dark:border border-slate-400 
                 dark:text-white">
                 <p class="text-wrap">{{ book_title.title }}</p>
                 </a>

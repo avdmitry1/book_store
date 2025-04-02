@@ -18,6 +18,11 @@ class Rental(models.Model):
     is_closed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    
+    @property
+    def status_text(self):
+        return dict(STATUS_CHOICES).get(self.status)
 
     def __str__(self):
         return f"{self.book.isbn} rented by {self.customer.user_name}"
@@ -27,5 +32,8 @@ class Rental(models.Model):
             self.rent_end_date = self.rent_start_date + timedelta(days=14)
         super().save(*args, **kwargs)
 
+
+        
+        
     class Meta:
         ordering = ("-created_at",)
