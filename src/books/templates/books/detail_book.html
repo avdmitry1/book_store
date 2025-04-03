@@ -15,7 +15,7 @@
         <div class="text-center mb-5 text-lg font-semibold">
             <!-- display status -->
             {% if object.is_available %}
-            Available: 
+                Available: 
                 {% if object.status %}
                     {{ object.status }}
                 {% else %}
@@ -31,13 +31,11 @@
         <div class="mt-5 text-center">
             <!-- rent or change status buttons -->
             {% if not object.is_available %}
-                <a href="" class="bg-sky-600/70 hover:bg-sky-500/70 dark:hover:bg-sky-700/70 
+                <a href="{% url 'rentals:update' object.id object.rental_id %}" class="bg-sky-600/70 hover:bg-sky-500/70 dark:hover:bg-sky-700/70 
                 inline-flex items-center rounded-lg p-3 duration-200 text-white">Change status</a>
-                <a href="" class="bg-rose-600/70 hover:bg-rose-500/70 dark:hover:bg-rose-700/70 
+                <a href="{% url 'rentals:detail' object.id %}" class="bg-rose-600/70 hover:bg-rose-500/70 dark:hover:bg-rose-700/70 
                 inline-flex items-center rounded-lg p-3 duration-200 text-white ">History</a>
-                
             {% endif %}
-                
         </div>
     </div>  
 </div>
@@ -47,7 +45,7 @@
         border-slate-500 dark:border-slate-900 text-slate-700 
         dark:text-slate-200 drop-shadow-md w-1/2">
         <!--code for copying to clipboard-->
-        <div id="book-id-box" class="text-center">{{ object.isbn }}</div>
+        <div id="book-id-box" class="text-center">{{ object.id }}</div>
         <div class="absolute top-1 right-2 cursor-pointer dark:text-white" id="copy-btn-box">
             <i class="fa-solid fa-copy"></i>
         </div>

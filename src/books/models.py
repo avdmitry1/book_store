@@ -96,6 +96,12 @@ class Book(models.Model):
         return False
 
     @property
+    def rental_id(self):
+        if len(self.rental_set.all()) > 0:
+            return self.rental_set.first().id
+        return None
+
+    @property
     def is_available(self):
         rentals = self.rental_set.all()
         if rentals:
