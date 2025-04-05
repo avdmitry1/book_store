@@ -82,18 +82,14 @@ class Book(models.Model):
     def __str__(self):
         return str(self.title)
 
+    # obj.status замість obj.status()
     @property
     def status(self):
-        # Check if there are any Rental objects associated with this book
-        if len(self.rental_set.all()) > 0:
-            # Convert STATUS_CHOICES tuple into a dictionary for easy lookup
-            statuses = dict(STATUS_CHOICES)
-            # Retrieve the status of the first Rental object and return its
-            # human-readable representation from the statuses dictionary
-            return statuses[self.rental_set.first().status]
-        # If no Rental objects are associated, return False indicating
-        # that the book has not been rented
-        return False
+        # зберігаємо перший об'єкт,
+        rental = self.rental_set.first()
+        if not rental:
+            return False
+        return dict(STATUS_CHOICES).get(rental.status, "Невідомий статус")
 
     @property
     def rental_id(self):
