@@ -1,4 +1,7 @@
+from datetime import timezone
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.generic import ListView, UpdateView
 from django.db.models import Q
 
@@ -40,5 +43,18 @@ class BookRentalHistoryView(ListView):
 
 class UpdateRentalStatusView(UpdateView):
     model = Rental
-    template_name = 'rentals/update.html'
-    fields = ('status',)
+    template_name = "rentals/update.html"
+    fields = ("status",)
+
+    def get_success_url(self):
+        book_id = self.kwargs.get("book_id")
+        return reverse("rentals:detail", kwargs={"book_id": book_id})
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if instance.status == 1:
+            instance.return_date = timezone.now()
+        instance.is_closed = True
+        instance.save()
+        messages.add_message(self.request, messages.INFO, "Rental status updated.")
+        return super().form_valid(form)

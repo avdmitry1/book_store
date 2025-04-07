@@ -1,10 +1,28 @@
 {% extends 'base.html' %}
-
+{% load widget_tweaks %}
 {% block title %}
     Update Rental
 {% endblock title %}
 
 {% block content %}
-    UPDATE STATUS
-    <div class="flex justify-center items-center">{{ object.book.title }}</div>
+    {% include 'components/header.html' with title='Update Rental' description=object.book.id is_go_back=True %}
+    
+    {% if object.is_closed %}
+        <p class="text-center text-2xl font-semibold py-10">This rental is closed.</p>
+    {% else %}
+        <form method="POST" class="">
+            {% csrf_token %}
+            <div class="mb-2">
+                <!-- Status field -->
+                <label for="{{ form.status.id_for_label }}" class="inline-block font-semibold">STATUS :</label>
+                {{ form.status|add_class:'bg-slate-100 text-black rounded-lg p-1 w-32 shadow-lg shadow-slate-400' }}
+            </div>
+            <button type="submit" class="px-3 py-2 mt-3 text-white bg-sky-600/70 hover:bg-sky-500/70 
+                dark:hover:bg-sky-700/70 rounded-lg">Update
+            </button>
+        </form>
+        
+    {% endif %}
+        
+
 {% endblock content %}

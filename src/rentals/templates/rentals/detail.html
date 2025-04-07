@@ -8,6 +8,14 @@
 
 
 {% block content %}
+    {% if messages %}
+	    {% for message in messages %}
+		    {% if message.level_tag == 'info' %}
+			    {% include 'components/alert.html' with is_info=True title='Success' body=message %}
+		    {% endif %}
+	    {% endfor %}
+    {% endif %}
+
     {% if object.title.title %}
         {% include 'components/header.html' with title=object.title.title description=object.title.publisher.name %}
     {% else %}
