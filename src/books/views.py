@@ -133,25 +133,25 @@ class BookDetailView(DetailView):
 
     def get_object(self):
         id = self.kwargs.get("book_id")
-        obj = get_object_or_404(Book, isbn=id)
+        obj = get_object_or_404(Book, id=id)
         return obj
 
 
 class BookDeleteView(DeleteView):
     model = Book
     template_name = "books/confirm_delete.html"
-    success_url = reverse_lazy("book_list")
-
+    pk_url_kwarg = "book_id"
+    
     def get_object(self):
         id = self.kwargs.get("book_id")
-        obj = get_object_or_404(Book, isbn=id)
+        obj = get_object_or_404(Book, id=id)
         return obj
 
     def get_success_url(self):
         messages.add_message(
             self.request,
             messages.INFO,
-            f"Book {self.get_object().isbn} deleted.",
+            f"Book {self.object.isbn} deleted.",
         )
         letter = self.kwargs.get("letter")
         slug = self.kwargs.get("slug")

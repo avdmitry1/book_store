@@ -1,8 +1,8 @@
-from datetime import timezone
+from datetime import datetime, timezone
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView
 from django.db.models import Q
 
 from books.models import Book
@@ -57,4 +57,29 @@ class UpdateRentalStatusView(UpdateView):
         instance.is_closed = True
         instance.save()
         messages.add_message(self.request, messages.INFO, "Rental status updated.")
+        return super().form_valid(form)
+
+
+class CreateNewRentalView(CreateView):
+    model = Rental
+    template_name = "rentals/new.html"
+    fields = ("customer",)
+
+    def get_success_url(self):
+        book_id = self.kwargs.get("book_id")
+        return reverse("rentals:detail", kwargs={"book_id": book_id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["book_id"] = self.kwargs.get("book_id")
+        return context
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        book_id = self.kwargs.get("book_id")
+        obj = Book.objects.get(id=book_id)
+        instance.book = obj
+        instance.status = 0
+        instance.rent_start_date = datetime.today().date()
+        instance.save()
         return super().form_valid(form)

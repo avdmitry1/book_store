@@ -15,11 +15,17 @@
         <div class="text-center mb-5 text-lg font-semibold">
             <!-- display status -->
             {% if object.is_available %}
+
+                <a href="{% url 'rentals:new' object.id %}" class="bg-sky-600/70 hover:bg-sky-500/70 
+                dark:hover:bg-sky-500/70 inline-flex items-center rounded-lg p-2 duration-300 
+                text-white">Rent</a>
+
                 {% if object.status %}
                     {{ object.status }}
                 {% else %}
                     Not rented
                 {% endif %}
+                
             {% else %}
                 Not available
             {% endif %}

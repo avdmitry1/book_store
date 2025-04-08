@@ -66,7 +66,7 @@ class Book(models.Model):
         context = {
             "letter": letter,
             "slug": self.title.slug,
-            "book_id": self.isbn,
+            "book_id": self.id,
         }
         return reverse("books:detail_book", kwargs=context)
 
@@ -75,7 +75,7 @@ class Book(models.Model):
         context = {
             "letter": letter,
             "slug": self.title.slug,
-            "book_id": self.isbn,
+            "book_id": self.id,
         }
         return reverse("books:delete_book", kwargs=context)
 
