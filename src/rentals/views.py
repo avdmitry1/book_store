@@ -11,7 +11,6 @@ from books.models import Book
 from rentals.models import Rental
 
 from .admin import RentalResource
-from .choices import FORMAT_CHOICES
 from .forms import SearchBookForm, SelectExportOptionForm
 
 
