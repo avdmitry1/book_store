@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from authors.models import Author
 from publishers.models import Publisher
 from rentals.choices import STATUS_CHOICES
+
 from .utils import hash_book_info
 
 

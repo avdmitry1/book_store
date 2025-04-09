@@ -1,4 +1,5 @@
 from django import template
+
 from ..choices import STATUS_CHOICES
 
 register = template.Library()
