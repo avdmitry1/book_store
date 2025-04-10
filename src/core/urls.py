@@ -20,10 +20,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import change_theme, home_view
+from .views import change_theme, DashBoardView, chart_data
 
 urlpatterns = [
-    path("", home_view, name="home"),
+    path("", DashBoardView.as_view(), name="home"),
+    path("chart-data/", chart_data, name="data"),
     path("admin/", admin.site.urls),
     path("switch", change_theme, name="change_theme"),
     path("books/", include("books.urls", namespace="books")),

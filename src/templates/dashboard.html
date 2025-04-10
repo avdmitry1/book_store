@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{%block scripts %}
+    <script src="{% static 'dashboard.js' %}" defer></script>
+{% endblock scripts %}
+
+{%block title %}
+    Dashboard
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+    <div id="dashboard-box"></div>
+{% endblock content %}

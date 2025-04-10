@@ -1,8 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
-from books.models import BookTitle
+from books.models import Book, BookTitle
 from customers.models import Customer
+from django.views.generic import TemplateView
+from django.db.models import Count, Sum
 
 
 def change_theme(request):
@@ -22,23 +24,33 @@ def change_theme(request):
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
-def home_view(request):
-    """
-    This view renders the homepage with a list of customers and the first book's details.
-    If no books exist, it handles the absence gracefully.
-    """
-    # Get all customers from the database
-    qs = Customer.objects.all()
+class DashBoardView(TemplateView):
+    template_name = "dashboard.html"
 
-    # Get the first book title object from the BookTitle model
-    obj = BookTitle.objects.first()
 
-    # If a book exists, get its books and title; otherwise, set to None and a default title
-    books = obj.books if obj else None
-    title = obj.title if obj else "No books available"
+def chart_data(request):
+    qs = Book.objects.values("title").annotate(Count("title"))
+    print(qs)
+    return JsonResponse({"msg": [1, 2, 3, 4, 5]})
 
-    # Prepare the context to send to the template
-    context = {"qs": qs, "books": books, "title": title}
 
-    # Render the homepage with the context
-    return render(request, "main.html", context)
+# def home_view(request):
+#     """
+#     This view renders the homepage with a list of customers and the first book's details.
+#     If no books exist, it handles the absence gracefully.
+#     """
+#     # Get all customers from the database
+#     qs = Customer.objects.all()
+
+#     # Get the first book title object from the BookTitle model
+#     obj = BookTitle.objects.first()
+
+#     # If a book exists, get its books and title; otherwise, set to None and a default title
+#     books = obj.books if obj else None
+#     title = obj.title if obj else "No books available"
+
+#     # Prepare the context to send to the template
+#     context = {"qs": qs, "books": books, "title": title}
+
+#     # Render the homepage with the context
+#     return render(request, "main.html", context)
