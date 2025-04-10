@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views.generic import DeleteView, DetailView, FormView, ListView
 
 from .forms import BookTitleForm

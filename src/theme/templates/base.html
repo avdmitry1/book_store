@@ -3,8 +3,8 @@
 <html lang="en" class="{% if request.session.is_dark_mode %}dark{% endif %}">
   <head>
     <title>
-      Django Tailwind |{% block title %}
-      {% endblock %}
+        Django Tailwind |{% block title %}
+        {% endblock %}
     </title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,33 +34,34 @@
     {% tailwind_css %}
   </head>
 
-  <!-- body -->
-  <body class="bg-neutral-100 dark:bg-slate-700 text-black dark:text-white">
+<!-- body -->
+<body class="bg-neutral-100 dark:bg-slate-700 text-black dark:text-white">
     <!-- navbar -->
     {% include 'layout/navbar.html' %}
     <div class="grid grid-cols-12">
-      <div class="col-span-1 py-4">
-        <!-- sidebar -->
-        {% include 'layout/sidebar.html' %}
-      </div>
-      <div class="col-span-11">
-        <div class="pt-10 px-6">
-          <!-- theme toggle -->
-          <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-400 
-            hover:bg-slate-500 dark:bg-slate-500 dark:hover:bg-slate-600 drop-shadow-lg transition">
-            <i class="fa-solid 
-            {% if request.session.is_dark_mode %}
-                fa-sun
-            {% else %}               
-                fa-moon
-            {% endif %} fa-lg">
-            </i>
-          </a>
-          {% block content %}
-            <!-- content -->
-          {% endblock %}
+        <div class="col-span-1 py-4">
+            <!-- sidebar -->
+            {% include 'layout/sidebar.html' %}
         </div>
-      </div>
+            <div class="col-span-11">
+                <div class="pt-10 px-6">
+                <!-- theme toggle -->
+                <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-400 
+                    hover:bg-slate-500 dark:bg-slate-500 dark:hover:bg-slate-600 drop-shadow-lg transition">
+                    <i class="fa-solid 
+                    {% if request.session.is_dark_mode %}
+                        fa-sun
+                    {% else %}               
+                        fa-moon
+                    {% endif %} fa-lg">
+                    </i>
+                </a>
+                {% block content %}
+                    <!-- content -->
+                {% endblock %}
+                </div>
+            </div>
+        </div>
     </div>
-  </body>
+</body>
 </html>

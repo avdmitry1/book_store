@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import change_theme, DashBoardView, chart_data
+from .views import DashBoardView, change_theme, chart_data
 
 urlpatterns = [
     path("", DashBoardView.as_view(), name="home"),
