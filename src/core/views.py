@@ -1,12 +1,33 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count
 from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from books.models import Book, BookTitle
 from customers.models import Customer
 from publishers.models import Publisher
-from rentals.models import Rental
 from rentals.choices import STATUS_CHOICES
+from rentals.models import Rental
+
+from .forms import LoginForm, OTPForm
+
+
+def login_view(request):
+    form = LoginForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                print("ok, sending OTP")
+            else:
+                messages.add_message(request, messages.ERROR, "NOT OK")
+
+    context = {"form": form}
+    return render(request, "login.html", context)
 
 
 def change_theme(request):
@@ -86,8 +107,7 @@ def chart_data(request):
             "type": "bar",
         }
     )
-    print(status)
-    return JsonResponse({"msg": data})
+    return JsonResponse({"data": data})
 
 
 # def home_view(request):
