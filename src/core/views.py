@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
 from books.models import Book, BookTitle
@@ -13,23 +13,87 @@ from rentals.models import Rental
 
 from .forms import LoginForm, OTPForm
 from .utils import send_otp
+from datetime import datetime
+import pyotp
+from django.contrib.auth.models import User
 
 
 def login_view(request):
-    form = LoginForm(request.POST or None)
+    form = LoginForm(request.POST or None)  # Ініціалізуємо форму з POST-даними
+
     if request.method == "POST":
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
+        if form.is_valid():  # Якщо форма пройшла валідацію
+            username = form.cleaned_data.get("username")  # Отримуємо ім’я користувача
+            password = form.cleaned_data.get("password")  # Отримуємо пароль
+            user = authenticate(
+                request, username=username, password=password
+            )  # Перевірка автентифікації
+
             if user is not None:
-                send_otp(request)
-                print("ok, sending OTP")
+                send_otp(request)  # Надсилаємо одноразовий код (OTP)
+                request.session["username"] = (
+                    username  # Зберігаємо ім’я користувача в сесії для подальшої перевірки OTP
+                )
+                print("ok, sending OTP")  # Лог для розробника
+                return redirect("otp")  # Перенаправлення на сторінку з OTP
             else:
-                messages.add_message(request, messages.ERROR, "NOT OK")
+                messages.add_message(
+                    request, messages.ERROR, "Invalid username or password."
+                )  # Повідомлення про помилку
 
     context = {"form": form}
     return render(request, "login.html", context)
+
+
+def otp_view(request):
+    error_message = None  # Змінна для збереження повідомлення про помилку
+    # Ініціалізація форми з POST-даними (або порожньої, якщо GET-запит)
+    form = OTPForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():  # Перевірка, чи форма валідна
+            otp = form.cleaned_data.get("otp")  # Отримання введеного користувачем OTP
+            username = request.session.get("username")  # Ім'я користувача з сесії
+            otp_secret_key = request.session.get(
+                "otp_secret_key"
+            )  # Секретний ключ для генерації OTP
+            otp_valid_until = request.session.get(
+                "otp_valid_date"
+            )  # Час, до якого дійсний OTP
+
+            if otp_secret_key and otp_valid_until:
+                # Перетворення ISO-рядка у datetime
+                valid_until = datetime.fromisoformat(otp_valid_until)
+
+                if valid_until > datetime.now():  # Перевірка, чи ще дійсний OTP
+                    # Генератор OTP з інтервалом 60 сек.
+                    totp = pyotp.TOTP(otp_secret_key, interval=60)
+
+                    if totp.verify(otp):  # Перевірка, чи OTP правильний
+                        # Отримання користувача з бази
+                        user = get_object_or_404(User, username=username)
+                        login(request, user)  # Вхід користувача в систему
+                        # Видалення даних OTP із сесії після успішного входу
+                        del request.session["otp_secret_key"]
+                        del request.session["otp_valid_date"]
+                        return redirect("home")  # Перенаправлення на головну сторінку
+                    else:
+                        error_message = (
+                            "Невірний одноразовий код"  # Якщо код неправильний
+                        )
+                else:
+                    error_message = "Термін дії коду вичерпано"  # Якщо термін дії минув
+            else:
+                error_message = (
+                    "Код не знайдено в сесії"  # Якщо дані не збережено в сесії
+                )
+
+        # Якщо виникла помилка — додаємо її до повідомлень
+        if error_message:
+            messages.add_message(request, messages.ERROR, error_message)
+
+    context = {"form": form}
+    return render(request, "otp.html", context)
 
 
 def change_theme(request):

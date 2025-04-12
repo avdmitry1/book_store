@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import DashBoardView, change_theme, chart_data, login_view
+from .views import DashBoardView, change_theme, chart_data, login_view, otp_view
 
 urlpatterns = [
     path("", DashBoardView.as_view(), name="home"),
@@ -31,6 +31,7 @@ urlpatterns = [
     path("rentals/", include("rentals.urls", namespace="rentals")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("login/", login_view, name="login"),
+    path("otp/", otp_view, name="otp"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
