@@ -1,8 +1,12 @@
+from datetime import datetime
+
+import pyotp
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
 from books.models import Book, BookTitle
@@ -13,9 +17,6 @@ from rentals.models import Rental
 
 from .forms import LoginForm, OTPForm
 from .utils import send_otp
-from datetime import datetime
-import pyotp
-from django.contrib.auth.models import User
 
 
 def login_view(request):

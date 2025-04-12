@@ -1,5 +1,6 @@
-import pyotp
 from datetime import datetime, timedelta
+
+import pyotp
 
 
 def send_otp(request):
