@@ -12,6 +12,7 @@ from rentals.choices import STATUS_CHOICES
 from rentals.models import Rental
 
 from .forms import LoginForm, OTPForm
+from .utils import send_otp
 
 
 def login_view(request):
@@ -22,6 +23,7 @@ def login_view(request):
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             if user is not None:
+                send_otp(request)
                 print("ok, sending OTP")
             else:
                 messages.add_message(request, messages.ERROR, "NOT OK")
