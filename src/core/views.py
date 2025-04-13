@@ -38,7 +38,7 @@ def login_view(request):
                 print("ok, sending OTP")  # Лог для розробника
                 return redirect("otp")  # Перенаправлення на сторінку з OTP
             else:
-                messages.add_message(
+                        messages.add_message(
                     request, messages.ERROR, "Invalid username or password."
                 )  # Повідомлення про помилку
 
