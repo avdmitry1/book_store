@@ -24,8 +24,8 @@ def login_view(request):
 
     if request.method == "POST":
         if form.is_valid():  # Якщо форма пройшла валідацію
-            username = form.cleaned_data.get("username")  # Отримуємо ім’я користувача
-            password = form.cleaned_data.get("password")  # Отримуємо пароль
+            username = form.cleaned_data["username"]  # Отримуємо ім’я користувача
+            password = form.cleaned_data["password"]  # Отримуємо пароль
             user = authenticate(
                 request, username=username, password=password
             )  # Перевірка автентифікації
@@ -38,7 +38,7 @@ def login_view(request):
                 print("ok, sending OTP")  # Лог для розробника
                 return redirect("otp")  # Перенаправлення на сторінку з OTP
             else:
-                        messages.add_message(
+                messages.add_message(
                     request, messages.ERROR, "Invalid username or password."
                 )  # Повідомлення про помилку
 
@@ -53,8 +53,8 @@ def otp_view(request):
 
     if request.method == "POST":
         if form.is_valid():  # Перевірка, чи форма валідна
-            otp = form.cleaned_data.get("otp")  # Отримання введеного користувачем OTP
-            username = request.session.get("username")  # Ім'я користувача з сесії
+            otp = form.cleaned_data["otp"]  # Отримання введеного користувачем OTP
+            username = request.session["username"]  # Ім'я користувача з сесії
             otp_secret_key = request.session.get(
                 "otp_secret_key"
             )  # Секретний ключ для генерації OTP
@@ -103,7 +103,7 @@ def change_theme(request):
     This function checks the current theme in the session and toggles it.
     """
     # Check if the theme is not set in the session
-    if request.session.get("is_dark_mode") is None:
+    if request.session["is_dark_mode"] is None:
         # If it's not set, set the theme to dark mode by default
         request.session["is_dark_mode"] = True
     else:
