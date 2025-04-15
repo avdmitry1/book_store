@@ -2,9 +2,6 @@
 {% load widget_tweaks %}
 
 {% block title %}login{% endblock title %}
-    
-
-
 
 {% block content %}
 
@@ -16,9 +13,9 @@
     {% endfor %}
 {% endif %}
 
-{% include "components/header.html" with title="OTP verification" description="Provide one time password    " %}
+{% include "components/header.html" with title="OTP verification" description="Provide one time password" %}
 
-
+<!-- form -->
 <div class="flex justify-center mt-10">
     <div class="border border-slate-400 rounded-lg p-6 w-auto">
         <form method="POST" autocomplete="off">
