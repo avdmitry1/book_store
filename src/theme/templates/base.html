@@ -43,23 +43,22 @@
     <!-- navbar -->
     {% include 'layout/navbar.html' %}
     <div class="grid grid-cols-12">
-        <div class="col-span-1 py-4">
-            <!-- sidebar -->
-            {% include 'layout/sidebar.html' %}
-        </div>
-            <div class="col-span-11">
+        {% if request.user.is_authenticated %}
+            <div class="col-span-1 py-4">
+                <!-- sidebar -->
+                {% include 'layout/sidebar.html' %}
+            </div>
+        {% endif %}
+            <div class="{% if request.user.is_authenticated %}col-span-10{% else %}col-span-12{% endif %}">
                 <div class="pt-10 px-6">
-                <!-- theme toggle -->
+                    <!-- theme toggle -->
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'change_theme' %}" class="fixed top-20 right-0 p-3 rounded-l-lg bg-slate-400 
                     hover:bg-slate-500 dark:bg-slate-500 dark:hover:bg-slate-600 drop-shadow-lg transition">
-                    <i class="fa-solid 
-                    {% if request.session.is_dark_mode %}
-                        fa-sun
-                    {% else %}               
-                        fa-moon
-                    {% endif %} fa-lg">
-                    </i>
+                    <i class="fa-solid {% if request.session.is_dark_mode %} fa-sun
+                    {% else %} fa-moon {% endif %} fa-lg"></i>
                 </a>
+                {% endif %}
                 {% block content %}
                     <!-- content -->
                 {% endblock %}

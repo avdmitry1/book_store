@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from .views import (DashBoardView, change_theme, chart_data, login_view,
-                    logout_view, otp_view)
+                    logout_view, otp_view, AboutView)
 
 urlpatterns = [
     path("", DashBoardView.as_view(), name="home"),
@@ -34,6 +34,7 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("otp/", otp_view, name="otp"),
+    path("about/", AboutView.as_view(), name="about"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

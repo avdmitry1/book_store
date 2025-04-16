@@ -1,6 +1,7 @@
 {% url 'home' as home_url %}
 {% url 'books:main' as books_url %}
 {% url 'rentals:main' as rentals_url %}
+{% url 'about' as about_url %}
 
 <!-- Sidebar -->
 <aside class="hidden md:block dark:bg-slate-600 bg-slate-200 h-screen w-full shadow-lg shadow-slate-500 
@@ -23,11 +24,19 @@
             </a>
         </li>
         <!-- rentals -->
-         <li>
+        <li>
             <a href="{{ rentals_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-300 
                 dark:hover:bg-slate-500 rounded-sm transition duration-300" id="rentals-link">
                 <i class="fa-solid fa-bookmark fa-xl"></i>
                 <p class="mt-4 text-wrap">Rentals</p>
+            </a>
+        </li>
+        <!-- about -->
+        <li>
+            <a href="{{ about_url }}" class="flex flex-col place-items-center py-10 hover:bg-slate-300 
+                dark:hover:bg-slate-500 rounded-sm transition duration-300 border-t border-slate-400" id="about-link">
+                <i class="fa-solid fa-circle-question fa-xl"></i>
+                <p class="mt-4 text-wrap">About</p>
             </a>
         </li>
     </ul>
@@ -40,13 +49,17 @@
         const homeLink = document.getElementById('home-link');
         const booksLink = document.getElementById('books-link');
         const rentalsLink = document.getElementById('rentals-link');
+        const aboutLink = document.getElementById('about-link');
 
         if (currentPath === '{{ home_url }}') {
-            homeLink.classList.add('bg-slate-500/40');
+            homeLink.classList.add('bg-slate-500/50');
         } else if (currentPath.startsWith('{{ books_url }}')) {
-            booksLink.classList.add('bg-slate-500/40');
+            booksLink.classList.add('bg-slate-500/50');
         } else if (currentPath === '{{ rentals_url }}') {
-            rentalsLink.classList.add('bg-slate-500/40');
+            rentalsLink.classList.add('bg-slate-500/50');
+        } else if (currentPath === '{{ about_url }}') {
+            aboutLink.classList.add('bg-slate-500/50');
         }
     });
 </script>
+

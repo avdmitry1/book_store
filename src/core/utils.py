@@ -3,6 +3,10 @@ from datetime import datetime, timedelta
 import pyotp
 
 
+def is_ajax(request):
+    return request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+
 def send_otp(request):
     totp = pyotp.TOTP(pyotp.random_base32(), interval=60)
     otp = totp.now()
@@ -11,4 +15,3 @@ def send_otp(request):
     request.session["otp_valid_date"] = str(valid_date)
 
     print(f"Your one time password is: {otp}")
-    

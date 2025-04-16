@@ -18,7 +18,7 @@ from rentals.choices import STATUS_CHOICES
 from rentals.models import Rental
 
 from .forms import LoginForm, OTPForm
-from .utils import send_otp
+from .utils import send_otp, is_ajax
 
 
 def logout_view(request):
@@ -110,15 +110,13 @@ def change_theme(request):
     Toggle the theme between light and dark mode.
     This function checks the current theme in the session and toggles it.
     """
-    # Check if the theme is not set in the session
-    if request.session["is_dark_mode"] is None:
-        # If it's not set, set the theme to dark mode by default
-        request.session["is_dark_mode"] = True
-    else:
-        # Otherwise, toggle the current theme
-        request.session["is_dark_mode"] = not request.session["is_dark_mode"]
+    # Отримуєм теперішнє значення теми, якщо ні записуємо False
+    is_dark = request.session.get("is_dark_mode", False)
 
-    # Redirect to the previous page or the homepage if no referer exists
+    # Перемикаємо тему
+    request.session["is_dark_mode"] = not is_dark
+
+    # Повертаємо користувача на сторінку, з якої він викликав цю функцію
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
@@ -126,8 +124,15 @@ class DashBoardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
 
+class AboutView(LoginRequiredMixin, TemplateView):
+    template_name = "about.html"
+
+
 @login_required
 def chart_data(request):
+    if not is_ajax(request):
+        return redirect("home")
+
     # books and book titles (bar)
     data = []
     all_books = len(Book.objects.all())
