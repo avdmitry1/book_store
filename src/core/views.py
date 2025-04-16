@@ -19,6 +19,11 @@ from .forms import LoginForm, OTPForm
 from .utils import send_otp
 
 
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
+
 def login_view(request):
     form = LoginForm(request.POST or None)  # Ініціалізуємо форму з POST-даними
 

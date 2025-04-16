@@ -20,7 +20,7 @@
                             rounded-lg transition duration-300 border border-slate-400">{{ request.user.username }}</div>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-slate-300 dark:hover:bg-slate-500
+                            <a href="{% url 'logout' %}" class="block px-4 py-2 hover:bg-slate-300 dark:hover:bg-slate-500
                             rounded-lg transition duration-300 border border-slate-400">logout</a>
                         </li>
                     </ul>
