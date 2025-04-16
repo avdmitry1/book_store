@@ -1,6 +1,7 @@
 import string
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -11,7 +12,7 @@ from .forms import BookTitleForm
 from .models import Book, BookTitle
 
 
-class BookTitleListView(FormView, ListView):
+class BookTitleListView(LoginRequiredMixin, FormView, ListView):
     """
     A view that displays a list of BookTitle objects and allows the user to add a new
     BookTitle object to the list.
@@ -112,7 +113,7 @@ class BookTitleListView(FormView, ListView):
 #         return Book.objects.filter(title=book_title)
 
 
-class BookTitleDetailView(DetailView):
+class BookTitleDetailView(LoginRequiredMixin, DetailView):
     model = BookTitle
     template_name = "books/detail.html"
 
@@ -127,7 +128,7 @@ class BookTitleDetailView(DetailView):
 #     return render(request, "books/detail.html", {"obj": obj})
 
 
-class BookDetailView(DetailView):
+class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
     template_name = "books/detail_book.html"
 
@@ -137,11 +138,11 @@ class BookDetailView(DetailView):
         return obj
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     template_name = "books/confirm_delete.html"
     pk_url_kwarg = "book_id"
-    
+
     def get_object(self):
         id = self.kwargs.get("book_id")
         obj = get_object_or_404(Book, id=id)

@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -14,6 +16,7 @@ from .admin import RentalResource
 from .forms import SearchBookForm, SelectExportOptionForm
 
 
+@login_required
 def search_book_view(request):
     # Ініціалізуємо форму пошуку з даними POST або None (якщо GET-запит)
     form = SearchBookForm(request.POST or None)
@@ -32,7 +35,7 @@ def search_book_view(request):
     return render(request, "rentals/main.html", context)
 
 
-class BookRentalHistoryView(ListView):
+class BookRentalHistoryView(LoginRequiredMixin, ListView):
     # Представлення для відображення історії оренди книги
     model = Rental  # Вказуємо модель, з якою працює це представлення (модель Rental)
     template_name = "rentals/detail.html"  # Шлях до шаблону, який використовуватиметься для відображення
@@ -59,7 +62,7 @@ class BookRentalHistoryView(ListView):
         return context  # Повертаємо оновлений контекст
 
 
-class UpdateRentalStatusView(UpdateView):
+class UpdateRentalStatusView(LoginRequiredMixin, UpdateView):
     # Представлення для оновлення статусу оренди
     model = Rental  # Вказуємо модель, з якою працює це представлення (модель Rental)
     template_name = "rentals/update.html"  # Шлях до шаблону для сторінки оновлення
@@ -89,7 +92,7 @@ class UpdateRentalStatusView(UpdateView):
         return super().form_valid(form)
 
 
-class CreateNewRentalView(CreateView):
+class CreateNewRentalView(LoginRequiredMixin, CreateView):
     # Представлення для створення нової оренди
     # Модель, з якою працює CreateView
     model = Rental
@@ -129,7 +132,7 @@ class CreateNewRentalView(CreateView):
         return super().form_valid(form)
 
 
-class SelectDownloadRentalsView(FormView):
+class SelectDownloadRentalsView(LoginRequiredMixin, FormView):
     # Шаблон, який використовується для відображення форми
     template_name = "rentals/select_format.html"
     # Клас форми, яка буде використовуватися

@@ -3,6 +3,8 @@ from datetime import datetime
 import pyotp
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect, JsonResponse
@@ -102,6 +104,7 @@ def otp_view(request):
     return render(request, "otp.html", context)
 
 
+@login_required
 def change_theme(request):
     """
     Toggle the theme between light and dark mode.
@@ -119,10 +122,11 @@ def change_theme(request):
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
-class DashBoardView(TemplateView):
+class DashBoardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
 
+@login_required
 def chart_data(request):
     # books and book titles (bar)
     data = []
