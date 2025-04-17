@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "customers",
     "publishers",
     "rentals",
+    "users",
     # 3rd party apps
     "django_countries",
     "import_export",
@@ -58,7 +59,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-
+AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_URL = "/login"
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"

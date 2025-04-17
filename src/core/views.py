@@ -5,7 +5,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db.models import Count
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -21,6 +23,9 @@ from .forms import LoginForm, OTPForm
 from .utils import send_otp, is_ajax
 
 
+User = get_user_model()
+
+
 def logout_view(request):
     logout(request)
     return redirect("login")
@@ -31,16 +36,16 @@ def login_view(request):
 
     if request.method == "POST":
         if form.is_valid():  # Якщо форма пройшла валідацію
-            username = form.cleaned_data["username"]  # Отримуємо ім’я користувача
+            email = form.cleaned_data["email"]  # Отримуємо ім’я користувача
             password = form.cleaned_data["password"]  # Отримуємо пароль
             user = authenticate(
-                request, username=username, password=password
+                request, email=email, password=password
             )  # Перевірка автентифікації
 
             if user is not None:
                 send_otp(request)  # Надсилаємо одноразовий код (OTP)
                 request.session["username"] = (
-                    username  # Зберігаємо ім’я користувача в сесії для подальшої перевірки OTP
+                    email  # Зберігаємо ім’я користувача в сесії для подальшої перевірки OTP
                 )
                 print("ok, sending OTP")  # Лог для розробника
                 return redirect("otp")  # Перенаправлення на сторінку з OTP
@@ -79,7 +84,7 @@ def otp_view(request):
 
                     if totp.verify(otp):  # Перевірка, чи OTP правильний
                         # Отримання користувача з бази
-                        user = get_object_or_404(User, username=username)
+                        user = get_object_or_404(User, email=username)
                         login(request, user)  # Вхід користувача в систему
                         # Видалення даних OTP із сесії після успішного входу
                         del request.session["otp_secret_key"]
